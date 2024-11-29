@@ -1,0 +1,154 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <gtk/gtk.h>
+
+#define PORT 8080
+#define MAX_LONGITUD 100
+
+// Estructura de datos para el examen
+typedef struct {
+    char pregunta[MAX_LONGITUD];
+    char opcionA[MAX_LONGITUD];
+    char opcionB[MAX_LONGITUD];
+    char opcionC[MAX_LONGITUD];
+    char opcionD[MAX_LONGITUD];
+    int respuesta_correcta; // 0: A, 1: B, 2: C, 3: D
+} Pregunta;
+
+// Estructura para almacenar los datos de la aplicación
+typedef struct {
+    GtkWidget *window;
+    GtkWidget *vbox;
+    GtkWidget *label_pregunta;
+    GtkWidget *button_A;
+    GtkWidget *button_B;
+    GtkWidget *button_C;
+    GtkWidget *button_D;
+    GtkWidget *label_resultado;
+    int socket;
+    int preguntas_restantes;
+    Pregunta preguntas[10];
+    int respuestas_usuario[10];
+} AppData;
+
+// Función para conectar con el servidor
+int conectar_con_servidor(const char *direccion_ip) {
+    int sock;
+    struct sockaddr_in servidor;
+
+    sock = socket(AF_INET, SOCK_STREAM, 0);
+    if (sock == -1) {
+        perror("No se pudo crear el socket");
+        exit(EXIT_FAILURE);
+    }
+
+    servidor.sin_family = AF_INET;
+    servidor.sin_port = htons(PORT);
+    servidor.sin_addr.s_addr = inet_addr(direccion_ip);
+
+    if (connect(sock, (struct sockaddr *)&servidor, sizeof(servidor)) < 0) {
+        perror("Conexión fallida");
+        close(sock);
+        exit(EXIT_FAILURE);
+    }
+
+    return sock;
+}
+
+// Función para enviar la selección de examen al servidor
+void seleccionar_examen(GtkWidget *widget, gpointer data) {
+    AppData *app = (AppData *)data;
+    char buffer[10];
+    
+    if (GTK_IS_BUTTON(widget)) {
+        const char *label = gtk_button_get_label(GTK_BUTTON(widget));
+        snprintf(buffer, sizeof(buffer), "%s", label);
+        send(app->socket, buffer, strlen(buffer), 0);
+        
+        // Esperar las preguntas del servidor
+        recv(app->socket, buffer, sizeof(buffer), 0);
+        gtk_label_set_text(GTK_LABEL(app->label_resultado), buffer);
+
+        // Mostrar preguntas después de recibirlas
+        // Aquí solo inicializamos la interfaz. Se completará después.
+    }
+}
+
+// Función para iniciar el examen en el cliente
+void iniciar_examen(AppData *app) {
+    // Configuración inicial de la ventana y botones
+    app->vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+    gtk_container_add(GTK_CONTAINER(app->window), app->vbox);
+
+    // Label para la pregunta
+    app->label_pregunta = gtk_label_new("Pregunta será aquí");
+    gtk_box_pack_start(GTK_BOX(app->vbox), app->label_pregunta, FALSE, FALSE, 0);
+
+    // Botones para las opciones de respuesta
+    app->button_A = gtk_button_new_with_label("A");
+    gtk_box_pack_start(GTK_BOX(app->vbox), app->button_A, FALSE, FALSE, 0);
+    g_signal_connect(app->button_A, "clicked", G_CALLBACK(seleccionar_examen), app);
+
+    app->button_B = gtk_button_new_with_label("B");
+    gtk_box_pack_start(GTK_BOX(app->vbox), app->button_B, FALSE, FALSE, 0);
+    g_signal_connect(app->button_B, "clicked", G_CALLBACK(seleccionar_examen), app);
+
+    app->button_C = gtk_button_new_with_label("C");
+    gtk_box_pack_start(GTK_BOX(app->vbox), app->button_C, FALSE, FALSE, 0);
+    g_signal_connect(app->button_C, "clicked", G_CALLBACK(seleccionar_examen), app);
+
+    app->button_D = gtk_button_new_with_label("D");
+    gtk_box_pack_start(GTK_BOX(app->vbox), app->button_D, FALSE, FALSE, 0);
+    g_signal_connect(app->button_D, "clicked", G_CALLBACK(seleccionar_examen), app);
+
+    // Label para mostrar los resultados
+    app->label_resultado = gtk_label_new("Resultados aquí");
+    gtk_box_pack_start(GTK_BOX(app->vbox), app->label_resultado, FALSE, FALSE, 0);
+
+    // Mostrar la ventana
+    gtk_widget_show_all(app->window);
+}
+
+// Función para iniciar la aplicación GTK
+static void activar(GtkApplication *app, gpointer user_data) {
+    AppData *app_data = (AppData *)user_data;
+    
+    app_data->window = gtk_application_window_new(app);
+    gtk_window_set_title(GTK_WINDOW(app_data->window), "Examen en línea");
+    gtk_window_set_default_size(GTK_WINDOW(app_data->window), 400, 300);
+
+    // Iniciar el examen
+    iniciar_examen(app_data);
+}
+
+// Función para cerrar el cliente
+void cerrar_cliente(AppData *app) {
+    close(app->socket);
+    gtk_main_quit();
+}
+
+// Función principal
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        fprintf(stderr, "Uso: %s <IP_DEL_SERVIDOR>\n", argv[0]);
+        exit(EXIT_FAILURE);
+    }
+
+    // Conectar con el servidor
+    AppData app_data;
+    app_data.socket = conectar_con_servidor(argv[1]);
+
+    // Inicializar GTK
+    GtkApplication *app = gtk_application_new("com.example.ExamenOnline", G_APPLICATION_FLAGS_NONE);
+    g_signal_connect(app, "activate", G_CALLBACK(activar), &app_data);
+    g_signal_connect(app, "shutdown", G_CALLBACK(cerrar_cliente), &app_data);
+
+    int status = g_application_run(G_APPLICATION(app), argc, argv);
+    g_object_unref(app);
+    return status;
+}
+

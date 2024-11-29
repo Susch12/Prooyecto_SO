@@ -1,0 +1,18 @@
+[0;31m[1m[!] Proyecto final[0m[0m
+
+[0;34m[1m Hacer un sistema denominado examenes en linea el cual debera funcionar como sigue:[0m[0m
+
+[0;35m[1m[-] Un usuario se conectará a un servidor el cual solicitará la información siguiente: 
+[0m[0m[0;31m[1m[!][0;31m[1m[0;35m[1m Matricula y contraseña.[0m[0m
+[0;31m[1m[!][0m[0m[0;35m[1m El servidor tendrpa un banco de materias como mínimo de 20 usuarios[0m[0m
+[0;31m[1m[!][0m[0m[0;35m[1m Una vez validad la información se le dará acceso al usuario a un menú de 3 examenes a realizar[0m[0m[0;31m[1m (I. Matematicas, II. Español e III. Ingles)[0m[0m
+[0;31m[1m[!][0m[0m [0;35m[1mEl usuario seleccionará una opción de las 3 disponibles y procederá a contestar dicho examen[0m[0m
+[0;31m[1m[!][0m[0m[0;35m[1m Cada examen tendrá un banco de preguntas [0m[0m
+[0;31m[1m[!][0m[0m[0;35m[1m Cada pregunta es de opción multiple con 3 opciones de respuesta y solo uno de ellas es la correcta[0m[0m
+[0;31m[1m[!][0m[0m [0;35m[1mCada pregunta tendrá como tolerancia de respuesta [0m[0m[0;33m[1m10 minutos[0m[0m.[0;35m[1mSi no se contesta se tomará como no correcta y seguirá a la siguiente pregunta o finaliza el examen[0m[0m
+[0;31m[1m[!][0m[0m[0;35m[1m El examen constará de 10 preguntas aleatorias y 2 usuarios no pueden tener el mismo examen, pero de coincidir en algunas preguntas
+[0;31m[1m[!][0m[0m [0;35m[1mAl finalizar el examen el servidor dará una calificación final al usuario[0m[0m
+[0;31m[1m[!][0m[0m[0;35m[1m Después de que 3 usuarios hayan realizado examen el servidor mostrará en pantall los resultados de los 3 usuarios[0m[0m
+[0;31m[1m[!] Cada usuario realizará los 3 examenes correspondientes[0m[0m
+
+[0;36m[1m[!] Utilizar un entorno gráfico... de preferencia GTK[0m[0m

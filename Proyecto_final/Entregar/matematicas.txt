@@ -1,0 +1,100 @@
+Cuál es la factorización del siguiente trinomio x2-11x+30?.
+(x+5)(x+6)
+(x+1)(x+30)
+(x-5)(x-6)
+3
+Factoriza la siguiente expresión: n6-3n3-18.
+(n3 + 3)(n3 – 6)
+(n3 – 3)(n3 + 6)
+(n3 – 3)(n3 − 6)
+1
+Al comprar 3 kg de naranjas y 2 kg de manzanas se pagaron $42.00. Si se compran 1 kg de naranjas y 3 kg de manzanas se pagan $49.00. ¿Cuánto cuesta el kilo de naranjas?.
+$15.00
+$9.00
+$4.00
+3
+A partir del siguiente sistema de ecuaciones, obtén el valor de x. 5x-4y=19 7x+3y=18 
+x=-3
+x=3 
+x=1
+2
+Soluciona el siguiente sistema de ecuaciones: 5x + 2y – z = –7; x – 2y + 2z = 0; 3y + z = 17 
+x = –2, y = 3, z = 5
+x = 2, y = 4, z = –5 
+x = –2, y = 4, z = 5 
+3
+Al desarrollar la expresión (2a−b)3(2a−b)^2 se obtiene:
+a^3−12a^2b+ab^2−b 
+8a^3−12a^2b+ab^2−b 
+8a^3−12a^2b+6ab^2−b 
+3
+A partir de las expresiones que se muestran en los incisos, determine cuál de ellas es la identidad.
+sin^2x+cos^2x=1 
+x=sinx  
+x^2+x=3 
+1
+Calcule el conjunto de valores que satisfacen la inecuación: 2x−1<x+4.
+(5,  ∞)
+[−∞, 5] 
+(−∞, 5)
+3
+Calcule el punto de intersección de las rectas x+y=2x+y=2 y −2x+y=1−2x+y=1, empleando el método por igualación. 
+(-1/3, -5/3)
+(-1/3, 5/3)
+(1/3, 5/3)
+3
+Un tren viaja a 80 km/h y tarda 2.5 horas en llegar a su destino. ¿Cuántos kilómetros recorrió?.
+200 km 
+160 km 
+180 km 
+3
+¿Cuál es el valor de x en la ecuación 2x + 5 = 17?
+.x = 5 
+x = 6 
+x = -6
+2
+¿Cuál es la derivada de f(x) = 3x^2 + 5x - 2?.
+6x + 5 
+3x^2 + 5x 
+3x + 5 
+1
+Resuelve la inecuación: 4x - 3 > 9.
+x > 2 
+x < 2 
+x > 3 
+3
+Cuál es el valor de cos(π/3)?.
+1/2
+√3/2
+-1/2
+a
+Simplifica la expresión: (x^2 - 9)/(x + 3).
+x - 3
+x + 3
+x - 9
+1 
+¿Cuál es el logaritmo de 100 en base 10?.
+2 
+3 
+10
+1
+Resuelve el sistema de ecuaciones: x + y = 10 y x - y = 4.
+x = 7, y = 3
+x = 6, y = 4
+x = 8, y = 2
+1 
+Calcula la integral ∫ 4x dx.
+2x^2 + C
+4x^2 + C
+x^2 + C 
+1
+¿Cuál es el perímetro de un círculo con radio r?.
+2πr
+πr
+πr^2
+1 
+Si una función es creciente en el intervalo (a, b), entonces su derivada en ese intervalo es...
+negativa
+cero
+positiva
+3

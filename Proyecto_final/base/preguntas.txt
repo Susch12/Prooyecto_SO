@@ -1,0 +1,60 @@
+Matematicas|1.¿Cuál es la factorización del siguiente trinomio x2-11x+30?|a)(x+5)(x+6)|b)(x+1)(x+30)|c)(x-5)(x-6)|c
+Matematicas|2.Factoriza la siguiente expresión: n6-3n3-18|a) (n3 + 3)(n3 – 6)|b) (n3 – 3)(n3 + 6)|c) (n3 – 3)(n3 − 6)|a
+Matematicas|3.Al comprar 3 kg de naranjas y 2 kg de manzanas se pagaron $42.00. Si se compran 1 kg de naranjas y 3 kg de manzanas se pagan $49.00. ¿Cuánto cuesta el kilo de naranjas?|a) $15.00|b) $9.00|c) $4.00|c
+Matematicas|4.A partir del siguiente sistema de ecuaciones, obtén el valor de x. 5x-4y=19 7x+3y=18|a) x=-3|b) x=3|c) x=1|b
+Matematicas|5.Soluciona el siguiente sistema de ecuaciones: 5x + 2y – z = –7; x – 2y + 2z = 0; 3y + z = 17|a) x = –2, y = 3, z = 5|b) x = 2, y = 4, z = –5|c) x = –2, y = 4, z = 5 |c 
+Matematicas|6.Al desarrollar la expresión (2a−b)3(2a−b)^2 se obtiene:|a) a^3−12a^2b+ab^2−b|b) 8a^3−12a^2b+ab^2−b|c) 8a^3−12a^2b+6ab^2−b|c 
+Matematicas|7.A partir de las expresiones que se muestran en los incisos, determine cuál de ellas es la identidad.|a) sin^2x+cos^2x=1||b) x=sinx|c) x^2+x=3|a 
+Matematicas|8.Calcule el conjunto de valores que satisfacen la inecuación: 2x−1<x+4|a) (5,  ∞)|b) [−∞, 5]|c) (−∞, 5)|c 
+Matematicas|9.Calcule el punto de intersección de las rectas x+y=2x+y=2 y −2x+y=1−2x+y=1, empleando el método por igualación.|a) (-1/3, -5/3)|b) (-1/3, 5/3)|c) (1/3, 5/3)|c
+Matematicas|10.Si una función f(x)f(x) es polinómica de grado nn, ¿qué se puede inferir acerca de su dominio?|a) Lo conforman todos los puntos que satisfacen a f(x)=0f(x)=0|b) Depende de los puntos críticos de la función|c) Está compuesto por todos los números reales|c 
+Matematicas|11. ¿Cuál es el valor de x en la ecuación 2x + 5 = 17?|a) x = 5|b) x = 6|c) x = -6|b
+Matematicas|12. ¿Cuál es la derivada de f(x) = 3x^2 + 5x - 2?|a) 6x + 5|b) 3x^2 + 5x|c) 3x + 5|a
+Matematicas|13. Resuelve la inecuación: 4x - 3 > 9|a) x > 2|b) x < 2|c) x > 3|c
+Matematicas|14. ¿Cuál es el valor de cos(π/3)?|a) 1/2|b) √3/2|c) -1/2|a
+Matematicas|15. Simplifica la expresión: (x^2 - 9)/(x + 3)|a) x - 3|b) x + 3|c) x - 9|a
+Matematicas|16. ¿Cuál es el logaritmo de 100 en base 10?|a) 2|b) 3|c) 10|a
+Matematicas|17. Resuelve el sistema de ecuaciones: x + y = 10 y x - y = 4|a) x = 7, y = 3|b) x = 6, y = 4|c) x = 8, y = 2|a
+Matematicas|18. Calcula la integral ∫ 4x dx.|a) 2x^2 + C|b) 4x^2 + C|c) x^2 + C|a
+Matematicas|19. ¿Cuál es el perímetro de un círculo con radio r?|a) 2πr|b) πr|c) πr^2|a
+Matematicas|20. Si una función es creciente en el intervalo (a, b), entonces su derivada en ese intervalo es...|a) negativa|b) cero|c) positiva|c
+Español|1. Identifica el enunciado en el que la función de la lengua es poética.|a) Era apenas una niña cuando la vi por primera vez.|b) A las tres en punto moriría un transeúnte.|c) Las nieves del tiempo platearon mi sien.|c 
+Español|2. Enunciado que ejemplifica la función referencial de la lengua.|a) ¡Qué lata con esta lluvia!|b) Seguirán las lluvias en el noreste del país.|c) Hoy llueve mucho, y pareciera que están lavando el mundo.|b 
+Español|3. Identifica el sujeto de la siguiente oración. Los científicos hallaron los huesos de un dinosaurio y algunos restos de otras especies.|a) Los huesos.|b) Los científicos.|c) Los restos.|b 
+Español|4. Elige la opción que contiene el predicado.|a) Compró la computadora.|b) Las pirámides de Teotihuacán.|c)Hoy, mañana y siempre.|d) Las cuentas del gran capitán.|a 
+Español|5. Selecciona la opción que corresponde al objeto indirecto de la siguiente oración: No obstante, los nuevos elementos también tuvieron que presentar sus respectos al funcionario que anunciaba su retiro.|a) Al funcionario|b) Sus respetos|c) Su retiro|a 
+Español|6. Selecciona la opción que presenta un sujeto tácito o implícito.|a) Somos nada frente a la muerte infausta.|b) Feliz aquél que busca a Dios en sí mismo.|c) ¡Señor!, tiembla mi alma ante tu grandeza.|a 
+Español|7.Selecciona el sinónimo de la palabra en mayúsculas. Marta veía los VESTIGIOS de un papel consumido por las llamas.|a) Pedazos.|b) Rezos.|c) Signos.|d) Resultados.|a 
+Español|8.Antónimo de VOCIFERAR.|a) Omitir.|b) Silenciar.|c) Gruñir.|b 
+Español|9.Cardumen es a pez como:|a) Piara a enjambre.|b) Gente a persona.|c) Rebaño a oveja.|c 
+Español|10.Selecciona la opción que completa la siguiente analogía. La hélice es al helicóptero lo que…|a) Las alas son al colibrí|b) Los cuernos son al ciervo.|c) Las patas son a la jirafa.|a
+Español|11. Identifica el enunciado que ejemplifica la función expresiva de la lengua.|a) La obra de arte quedó expuesta en el museo.|b) ¡Qué hermoso es este atardecer!|c) El libro fue publicado en 1995.|b
+Español|12. Enunciado que ejemplifica la función apelativa de la lengua.|a) Estudia para el examen.|b) El sol se oculta en el horizonte.|c) Este lugar es perfecto para descansar.|a
+Español|13. Identifica el complemento directo de la siguiente oración: Marta comió una deliciosa pizza.|a) Marta.|b) Comió.|c) Una deliciosa pizza.|c
+Español|14. Selecciona el verbo de la siguiente oración: "Ella estudia con mucho esfuerzo para sus exámenes."|a) Ella.|b) Estudia.|c) Mucho.|b
+Español|15. Elige el adjetivo en la siguiente oración: "La casa grande tiene un jardín hermoso."|a) Casa.|b) Grande.|c) Tiene.|b
+Español|16. Selecciona el enunciado que contiene una oración subordinada adjetiva.|a) El perro que vi en el parque es muy amigable.|b) Estaba lloviendo cuando llegué a casa.|c) Me siento cansado.|a
+Español|17. Selecciona el antónimo de la palabra ENORME.|a) Pequeño.|b) Grande.|c) Grandeza.|a
+Español|18. ¿Cuál es el sinónimo de la palabra ENREDADO?|a) Ordenado.|b) Deshecho.|c) Confuso.|c
+Español|19. Selecciona la opción que completa la analogía: El sol es a día como la luna es a...|a) Noche.|b) Cielo.|c) Estrella.|a
+Español|20. ¿Qué tipo de oración es "Si llueve, no iremos al parque"?|a) Simple.|b) Subordinada adjetiva.|c) Subordinada condicional.|c
+Ingles|1. They ………………….a photo when I was on the podium.|a) were taken|b) had taken|c) took|d
+Ingles|2. My sister Mary has got………|a) some friend|b) a friend|c) any friends|b
+Ingles|3. She hasn’t bought……………yet.|a) any books|b) any book|c) some books|a
+Ingles|4. I ……………..a great time at the party last night.|a) have|b) had|c) will have|b
+Ingles|5. We …………….to the cinema this weekend.|a) will go|b) are going|c) went|b
+Ingles|6. They …………….in this house since 2005.|a) live|b) lived|c) have lived|c
+Ingles|7. How ……………..is your brother?|a) old|b) age|c) much|a
+Ingles|8. He doesn’t like ……………..chocolate.|a) much|b) many|c) some|a
+Ingles|9. She is very good ……………..playing the piano.|a) at|b) in|c) on|a
+Ingles|10. The teacher asked us …………….the homework.|a) to do|b) do|c) doing|a
+Ingles|11. I can’t find my keys. I think I ……………..them.|a) lost|b) have lost|c) will lose|b
+Ingles|12. We …………….go to the beach if the weather is nice.|a) can|b) may|c) must|a
+Ingles|13. He always ……………..homework after school.|a) do|b) does|c) is doing|b
+Ingles|14. This is the house …………….I grew up.|a) which|b) who|c) where|c
+Ingles|15. I haven’t seen her ……………..last year.|a) for|b) since|c) ago|b
+Ingles|16. She didn’t feel ……………..to come to the party.|a) enough good|b) good enough|c) enough well|b
+Ingles|17. We are going to the cinema ……………..Friday.|a) on|b) in|c) at|a
+Ingles|18. They …………….the match if they had played better.|a) would have won|b) will have won|c) would win|a
+Ingles|19. ……………..you like tea or coffee?|a) Do|b) Are|c) Does|a
+Ingles|20. I’m really tired because I …………….working all day.|a) have been|b) am|c) was|a
