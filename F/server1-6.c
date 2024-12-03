@@ -147,21 +147,18 @@ void *manejar_cliente(void *arg) {
     read(client_sock, buffer, sizeof(buffer));
     char matricula[10], password[10];
     sscanf(buffer, "%s %s", matricula, password);
-    printf("Recibido login: %s %s\n", matricula, password); // Depuración
 
     pthread_mutex_lock(&lock);
     user_index = validar_usuario(matricula, password);
     pthread_mutex_unlock(&lock);
 
     if (user_index == -1) {
-        printf("Login fallido para usuario %s\n", matricula); // Depuración
         send(client_sock, "Login failed", strlen("Login failed") + 1, 0);
         close(client_sock);
         return NULL;
     }
 
     send(client_sock, "Login successful", strlen("Login successful") + 1, 0);
-    printf("Login exitoso para usuario %s\n", matricula); // Depuración
 
     // Enviar el menú para seleccionar el examen
     enviar_menu_examen(client_sock);
@@ -169,11 +166,9 @@ void *manejar_cliente(void *arg) {
     // Leer la opción seleccionada por el cliente
     int opcion_examen;
     read(client_sock, &opcion_examen, sizeof(opcion_examen));
-    printf("Opción de examen recibida: %d\n", opcion_examen); // Depuración
 
     if (opcion_examen < 1 || opcion_examen > 3) {
         send(client_sock, "Opción inválida", strlen("Opción inválida") + 1, 0);
-        printf("Opción inválida recibida. Cerrando conexión.\n"); // Depuración
         close(client_sock);
         return NULL;
     }
@@ -189,7 +184,6 @@ void *manejar_cliente(void *arg) {
 
     // Mezclar las preguntas
     mezclar_preguntas(preguntas_filtradas, total_preguntas_filtradas);
-    printf("Preguntas filtradas y mezcladas para examen %d.\n", opcion_examen); // Depuración
 
     int correctas = 0;
     for (int i = 0; i < 10 && i < total_preguntas_filtradas; i++) {
@@ -216,11 +210,10 @@ void *manejar_cliente(void *arg) {
     usuarios[user_index].calificaciones[opcion_examen - 1] = correctas;
     pthread_mutex_unlock(&lock);
 
-    printf("Calificación final enviada para usuario %s: %d\n", matricula, correctas); // Depuración
-
     close(client_sock);
     return NULL;
 }
+
 // Función principal del servidor
 int main() {
     int server_fd, client_sock, *new_sock;

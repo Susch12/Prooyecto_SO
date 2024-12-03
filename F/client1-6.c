@@ -13,12 +13,10 @@
 int obtener_respuesta_con_tiempo();
 
 // Función para manejar la conexión al servidor
-
 void manejar_conexion(int server_sock) {
     char buffer[MAX_BUF];
     char matricula[10], password[10];
     int seleccion;
-    int correctas = 0;  // Declarar la variable correctas aquí
 
     // Ingresar matrícula y contraseña
     printf("Ingrese su matrícula: ");
@@ -35,7 +33,6 @@ void manejar_conexion(int server_sock) {
 
     // Enviar datos de login al servidor
     snprintf(buffer, sizeof(buffer), "%s %s", matricula, password);
-    printf("Enviando login: %s %s\n", matricula, password); // Depuración
     if (send(server_sock, buffer, strlen(buffer) + 1, 0) < 0) {
         perror("Error enviando datos de login");
         close(server_sock);
@@ -53,8 +50,6 @@ void manejar_conexion(int server_sock) {
         close(server_sock);
         return;
     }
-    printf("Login exitoso.\n");
-
     // Recibir el menú de selección de exámenes
     int bytes_recibidos = recv(server_sock, buffer, sizeof(buffer), 0);
     if (bytes_recibidos < 0) {
@@ -73,7 +68,10 @@ void manejar_conexion(int server_sock) {
         return;
     }
 
-    // Recibir las preguntas y opciones
+    // Manejar el examen seleccionado
+    int correctas = 0;
+
+    // Recibir y mostrar las preguntas
     for (int i = 0; i < 10; i++) {
         char pregunta[256], opcion1[100], opcion2[100], opcion3[100];
         int respuesta_usuario, respuesta_correcta;
@@ -99,7 +97,6 @@ void manejar_conexion(int server_sock) {
         if (respuesta_usuario == -1) {
             printf("Respuesta incorrecta por tiempo agotado.\n");
         }
-
         if (send(server_sock, &respuesta_usuario, sizeof(respuesta_usuario), 0) < 0) {
             perror("Error enviando respuesta del usuario");
             close(server_sock);
@@ -116,7 +113,7 @@ void manejar_conexion(int server_sock) {
         // Verificar si la respuesta es correcta
         if (respuesta_usuario == respuesta_correcta) {
             printf("Respuesta correcta!\n");
-            correctas++;  // Incrementar el contador de respuestas correctas
+            correctas++;
         } else {
             printf("Respuesta incorrecta.\n");
         }
@@ -129,7 +126,8 @@ void manejar_conexion(int server_sock) {
         return;
     }
 
-    printf("Calificación final enviada: %d\n", correctas);
+    printf("Tu calificación final es: %d/10\n", correctas);
+
     close(server_sock);
 }
 

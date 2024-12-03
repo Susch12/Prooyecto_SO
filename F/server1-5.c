@@ -5,15 +5,11 @@
 #include <arpa/inet.h>
 #include <pthread.h>
 #include <time.h>
-#include <signal.h>
-#include <ctype.h>
 
 #define PORT 8080
 #define MAX_USERS 20
 #define MAX_CLIENTS 10
 #define MAX_QUESTIONS 30
-#define MAX_LONGITUD 100
-#define MAX_PREGUNTAS 10
 
 typedef struct {
     char matricula[10];
@@ -23,10 +19,8 @@ typedef struct {
 
 typedef struct {
     char pregunta[256];
-    char opcionA[100];
-    char opcionB[100];
-    char opcionC[100];
-    char respuesta_correcta;
+    char opciones[3][100];
+    int respuesta_correcta;
 } Pregunta;
 
 // Base de datos de usuarios y preguntas
@@ -36,12 +30,6 @@ int resultados_recientes[3][3]; // Últimos 3 usuarios (matrícula y calificacio
 
 // Mutex para proteger datos compartidos
 pthread_mutex_t lock;
-
-int pregunta_timeout = 0; // Variable global para el control del timeout
-
-void deshabilitar_SIGPIPE() {
-    signal(SIGPIPE, SIG_IGN);  // Ignorar la señal SIGPIPE
-}
 
 // Función para cargar usuarios desde un archivo binario
 void cargar_usuarios_bin(const char *nombre_archivo) {
@@ -94,46 +82,7 @@ int validar_usuario(char *matricula, char *password) {
 
 // Función para enviar el menú de selección de exámenes al cliente
 void enviar_menu_examen(int client_sock) {
-  int bytes_enviados = send(client_sock, "Seleccione el examen:\n1. Matemáticas\n2. Español\n3. Inglés\n", strlen("Seleccione el examen:\n1. Matemáticas\n2. Español\n3. Inglés\n") + 1, 0);
-if (bytes_enviados == -1) {
-    perror("Error enviando menú de examen");
-}
-}
-
-// Función para manejar el timeout
-void manejar_timeout(int sig) {
-    pregunta_timeout = 1; // Marca que se ha agotado el tiempo
-}
-
-// Función para filtrar las preguntas según la materia
-int filtrar_preguntas_por_examen(Pregunta preguntas[3][MAX_QUESTIONS], Pregunta preguntas_filtradas[MAX_PREGUNTAS], const char *examen, int total_preguntas) {
-    int index = 0;
-    int materia_idx = 0;
-    if (strcmp(examen, "Matemáticas") == 0) {
-        materia_idx = 0;
-    } else if (strcmp(examen, "Español") == 0) {
-        materia_idx = 1;
-    } else if (strcmp(examen, "Inglés") == 0) {
-        materia_idx = 2;
-    }
-
-    for (int i = 0; i < total_preguntas; i++) {
-        if (strlen(preguntas[materia_idx][i].pregunta) > 0) {
-            preguntas_filtradas[index++] = preguntas[materia_idx][i];
-        }
-    }
-    return index;
-}
-
-// Función para mezclar las preguntas (aleatorias)
-void mezclar_preguntas(Pregunta preguntas_filtradas[MAX_PREGUNTAS], int total_preguntas_filtradas) {
-    srand(time(NULL));
-    for (int i = 0; i < total_preguntas_filtradas; i++) {
-        int j = rand() % total_preguntas_filtradas;
-        Pregunta temp = preguntas_filtradas[i];
-        preguntas_filtradas[i] = preguntas_filtradas[j];
-        preguntas_filtradas[j] = temp;
-    }
+    send(client_sock, "Seleccione el examen:\n1. Matemáticas\n2. Español\n3. Inglés\n", strlen("Seleccione el examen:\n1. Matemáticas\n2. Español\n3. Inglés\n") + 1, 0);
 }
 
 // Función para manejar a cada cliente
@@ -147,21 +96,18 @@ void *manejar_cliente(void *arg) {
     read(client_sock, buffer, sizeof(buffer));
     char matricula[10], password[10];
     sscanf(buffer, "%s %s", matricula, password);
-    printf("Recibido login: %s %s\n", matricula, password); // Depuración
 
     pthread_mutex_lock(&lock);
     user_index = validar_usuario(matricula, password);
     pthread_mutex_unlock(&lock);
 
     if (user_index == -1) {
-        printf("Login fallido para usuario %s\n", matricula); // Depuración
         send(client_sock, "Login failed", strlen("Login failed") + 1, 0);
         close(client_sock);
         return NULL;
     }
 
     send(client_sock, "Login successful", strlen("Login successful") + 1, 0);
-    printf("Login exitoso para usuario %s\n", matricula); // Depuración
 
     // Enviar el menú para seleccionar el examen
     enviar_menu_examen(client_sock);
@@ -169,64 +115,57 @@ void *manejar_cliente(void *arg) {
     // Leer la opción seleccionada por el cliente
     int opcion_examen;
     read(client_sock, &opcion_examen, sizeof(opcion_examen));
-    printf("Opción de examen recibida: %d\n", opcion_examen); // Depuración
 
     if (opcion_examen < 1 || opcion_examen > 3) {
         send(client_sock, "Opción inválida", strlen("Opción inválida") + 1, 0);
-        printf("Opción inválida recibida. Cerrando conexión.\n"); // Depuración
         close(client_sock);
         return NULL;
     }
 
-    // Filtrar las preguntas por examen
-    Pregunta preguntas_filtradas[MAX_PREGUNTAS];
-    int total_preguntas_filtradas = filtrar_preguntas_por_examen(preguntas, preguntas_filtradas, opcion_examen == 1 ? "Matemáticas" : opcion_examen == 2 ? "Español" : "Inglés", MAX_QUESTIONS);
-    if (total_preguntas_filtradas == 0) {
-        send(client_sock, "No hay preguntas disponibles para este examen.\n", strlen("No hay preguntas disponibles para este examen.\n") + 1, 0);
-        close(client_sock);
-        return NULL;
-    }
-
-    // Mezclar las preguntas
-    mezclar_preguntas(preguntas_filtradas, total_preguntas_filtradas);
-    printf("Preguntas filtradas y mezcladas para examen %d.\n", opcion_examen); // Depuración
-
+    // Manejar el examen seleccionado
     int correctas = 0;
-    for (int i = 0; i < 10 && i < total_preguntas_filtradas; i++) {
-        pregunta_timeout = 0;
-        sprintf(buffer, "Pregunta %d: %s\nA) %s\nB) %s\nC) %s\n", i + 1, preguntas_filtradas[i].pregunta, preguntas_filtradas[i].opcionA, preguntas_filtradas[i].opcionB, preguntas_filtradas[i].opcionC);
-        send(client_sock, buffer, strlen(buffer), 0);
 
-        signal(SIGALRM, manejar_timeout);
-        alarm(60); // 1 minuto para responder
-        read(client_sock, buffer, sizeof(buffer));
-        alarm(0); // Cancelar alarma
+    // Seleccionar preguntas aleatorias
+    int usadas[MAX_QUESTIONS] = {0};
+    for (int i = 0; i < 10; i++) {
+        int pregunta_id;
+        do {
+            pregunta_id = rand() % MAX_QUESTIONS;
+        } while (usadas[pregunta_id]);
+        usadas[pregunta_id] = 1;
 
-        if (!pregunta_timeout && buffer[0] == preguntas_filtradas[i].respuesta_correcta) {
+        // Enviar pregunta y opciones
+        send(client_sock, preguntas[opcion_examen - 1][pregunta_id].pregunta, strlen(preguntas[opcion_examen - 1][pregunta_id].pregunta) + 1, 0);
+        for (int j = 0; j < 3; j++) {
+            send(client_sock, preguntas[opcion_examen - 1][pregunta_id].opciones[j], strlen(preguntas[opcion_examen - 1][pregunta_id].opciones[j]) + 1, 0);
+        }
+
+        // Recibir respuesta
+        int respuesta;
+        read(client_sock, &respuesta, sizeof(respuesta));
+
+        // Verificar respuesta
+        if (respuesta == preguntas[opcion_examen - 1][pregunta_id].respuesta_correcta) {
             correctas++;
-        } else {
-            send(client_sock, "Tiempo agotado o respuesta incorrecta.\n", strlen("Tiempo agotado o respuesta incorrecta.\n") + 1, 0);
         }
     }
 
-    // Enviar la calificación final
+    // Enviar calificación
     send(client_sock, &correctas, sizeof(correctas), 0);
 
     pthread_mutex_lock(&lock);
     usuarios[user_index].calificaciones[opcion_examen - 1] = correctas;
     pthread_mutex_unlock(&lock);
 
-    printf("Calificación final enviada para usuario %s: %d\n", matricula, correctas); // Depuración
-
     close(client_sock);
     return NULL;
 }
-// Función principal del servidor
+
 int main() {
     int server_fd, client_sock, *new_sock;
     struct sockaddr_in address;
     int addrlen = sizeof(address);
-    deshabilitar_SIGPIPE();
+
     pthread_mutex_init(&lock, NULL);
 
     // Cargar datos desde archivos binarios
@@ -271,3 +210,4 @@ int main() {
     pthread_mutex_destroy(&lock);
     return 0;
 }
+

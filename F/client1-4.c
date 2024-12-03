@@ -13,12 +13,10 @@
 int obtener_respuesta_con_tiempo();
 
 // Función para manejar la conexión al servidor
-
 void manejar_conexion(int server_sock) {
     char buffer[MAX_BUF];
     char matricula[10], password[10];
     int seleccion;
-    int correctas = 0;  // Declarar la variable correctas aquí
 
     // Ingresar matrícula y contraseña
     printf("Ingrese su matrícula: ");
@@ -35,7 +33,6 @@ void manejar_conexion(int server_sock) {
 
     // Enviar datos de login al servidor
     snprintf(buffer, sizeof(buffer), "%s %s", matricula, password);
-    printf("Enviando login: %s %s\n", matricula, password); // Depuración
     if (send(server_sock, buffer, strlen(buffer) + 1, 0) < 0) {
         perror("Error enviando datos de login");
         close(server_sock);
@@ -53,17 +50,15 @@ void manejar_conexion(int server_sock) {
         close(server_sock);
         return;
     }
-    printf("Login exitoso.\n");
+    printf("Login successful\n");
 
     // Recibir el menú de selección de exámenes
-    int bytes_recibidos = recv(server_sock, buffer, sizeof(buffer), 0);
-    if (bytes_recibidos < 0) {
-      perror("Error recibiendo menú de exámenes");
-      close(server_sock);
-      return;
+    if (recv(server_sock, buffer, sizeof(buffer), 0) < 0) {
+        perror("Error recibiendo menú de exámenes");
+        close(server_sock);
+        return;
     }
-    buffer[bytes_recibidos] = '\0';  // Asegurarse de terminar el string correctamente
-    printf("Menú recibido: %s\n", buffer);
+    printf("Menú recibido: %s\n", buffer);  // Imprime el contenido del menú
 
     printf("Seleccione el examen (1: Matemáticas, 2: Español, 3: Inglés): ");
     scanf("%d", &seleccion);
@@ -73,63 +68,65 @@ void manejar_conexion(int server_sock) {
         return;
     }
 
-    // Recibir las preguntas y opciones
-    for (int i = 0; i < 10; i++) {
-        char pregunta[256], opcion1[100], opcion2[100], opcion3[100];
-        int respuesta_usuario, respuesta_correcta;
+    // Bucle para manejar los 3 exámenes
+    for (int examen = 0; examen < 3; examen++) {
+        // Recibir y mostrar las preguntas
+        for (int i = 0; i < 10; i++) {
+            char pregunta[256], opcion1[100], opcion2[100], opcion3[100];
+            int respuesta_usuario, respuesta_correcta;
 
-        // Recibir pregunta y opciones
-        if (recv(server_sock, pregunta, sizeof(pregunta), 0) < 0 ||
-            recv(server_sock, opcion1, sizeof(opcion1), 0) < 0 ||
-            recv(server_sock, opcion2, sizeof(opcion2), 0) < 0 ||
-            recv(server_sock, opcion3, sizeof(opcion3), 0) < 0) {
-            perror("Error recibiendo pregunta y opciones");
+            // Recibir pregunta y opciones
+            if (recv(server_sock, pregunta, sizeof(pregunta), 0) < 0 ||
+                recv(server_sock, opcion1, sizeof(opcion1), 0) < 0 ||
+                recv(server_sock, opcion2, sizeof(opcion2), 0) < 0 ||
+                recv(server_sock, opcion3, sizeof(opcion3), 0) < 0) {
+                perror("Error recibiendo pregunta y opciones");
+                close(server_sock);
+                return;
+            }
+
+            printf("\nPregunta %d: %s\n", i + 1, pregunta);
+            printf("1. %s\n", opcion1);
+            printf("2. %s\n", opcion2);
+            printf("3. %s\n", opcion3);
+
+            // Elegir respuesta
+            printf("Selecciona tu respuesta (1, 2 o 3): ");
+            respuesta_usuario = obtener_respuesta_con_tiempo();
+            if (respuesta_usuario == -1) {
+                printf("Respuesta incorrecta por tiempo agotado.\n");
+            }
+            if (send(server_sock, &respuesta_usuario, sizeof(respuesta_usuario), 0) < 0) {
+                perror("Error enviando respuesta del usuario");
+                close(server_sock);
+                return;
+            }
+
+            // Recibir la respuesta correcta
+            if (recv(server_sock, &respuesta_correcta, sizeof(respuesta_correcta), 0) < 0) {
+                perror("Error recibiendo respuesta correcta");
+                close(server_sock);
+                return;
+            }
+
+            // Verificar si la respuesta es correcta
+            if (respuesta_usuario == respuesta_correcta) {
+                printf("Respuesta correcta!\n");
+            } else {
+                printf("Respuesta incorrecta.\n");
+            }
+        }
+
+        // Recibir la calificación final para el examen
+        int calificacion_final;  // Nueva variable para la calificación
+        if (recv(server_sock, &calificacion_final, sizeof(calificacion_final), 0) < 0) {
+            perror("Error recibiendo calificación final");
             close(server_sock);
             return;
         }
-
-        printf("\nPregunta %d: %s\n", i + 1, pregunta);
-        printf("1. %s\n", opcion1);
-        printf("2. %s\n", opcion2);
-        printf("3. %s\n", opcion3);
-
-        // Elegir respuesta
-        printf("Selecciona tu respuesta (1, 2 o 3): ");
-        respuesta_usuario = obtener_respuesta_con_tiempo();
-        if (respuesta_usuario == -1) {
-            printf("Respuesta incorrecta por tiempo agotado.\n");
-        }
-
-        if (send(server_sock, &respuesta_usuario, sizeof(respuesta_usuario), 0) < 0) {
-            perror("Error enviando respuesta del usuario");
-            close(server_sock);
-            return;
-        }
-
-        // Recibir la respuesta correcta
-        if (recv(server_sock, &respuesta_correcta, sizeof(respuesta_correcta), 0) < 0) {
-            perror("Error recibiendo respuesta correcta");
-            close(server_sock);
-            return;
-        }
-
-        // Verificar si la respuesta es correcta
-        if (respuesta_usuario == respuesta_correcta) {
-            printf("Respuesta correcta!\n");
-            correctas++;  // Incrementar el contador de respuestas correctas
-        } else {
-            printf("Respuesta incorrecta.\n");
-        }
+        printf("Tu calificación en el examen %d es: %d/10\n", examen + 1, calificacion_final);
     }
 
-    // Enviar calificación final
-    if (send(server_sock, &correctas, sizeof(correctas), 0) < 0) {
-        perror("Error enviando calificación final");
-        close(server_sock);
-        return;
-    }
-
-    printf("Calificación final enviada: %d\n", correctas);
     close(server_sock);
 }
 
@@ -175,7 +172,7 @@ int main() {
 
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(PORT);
-    server_addr.sin_addr.s_addr = inet_addr("192.168.100.142");  // Cambiar si el servidor está en otra dirección
+    server_addr.sin_addr.s_addr = inet_addr("127.0.0.1");  // Cambiar si el servidor está en otra dirección
 
     // Conectar al servidor
     if (connect(server_sock, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
